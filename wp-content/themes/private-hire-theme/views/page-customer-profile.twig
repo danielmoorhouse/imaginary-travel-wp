@@ -1,0 +1,65 @@
+{%  extends 'base.twig' %}
+
+{% block content %}
+{% if user %}
+{% include './partial/hero.twig' with {
+        'title': user.meta('first_name') ~ '&nbsp;' ~ user.meta('last_name'),
+        'introduction': '<span class="badge bg-info">' ~ user.meta('town_city') ~ '</span><br><br>' ~ user.user_email ~ '&nbsp;&bullet;&nbsp' ~ user.meta('street_name') ~ '&nbsp;&bullet;&nbsp' ~ user.meta('postcode'),
+} %}
+<div id="user-{{ user.id }}" class="container p-5 min-h-80-vh ">
+<div class="row">
+
+<div class="col-12">
+<div class="card profile font-montserrat">
+<div class="card-header p-4 ">
+<h2>Booking History</h2>
+    </div>
+    <div class="card-body p-3">
+    {% if bookings is not empty %}
+    <table class="table">
+        {% for booking in bookings %}
+            <tr>
+              
+                <td>
+                {{ booking.meta('pickup_house_number') }},&nbsp;
+                {{ booking.meta('pick-up_location') }},&nbsp;
+                    {{ booking.meta('pickup_postcode') }}
+                    </td> <!-- Another custom field -->
+                    <td><i class="fa-solid fa-arrow-right"></i></td>
+                    <td>
+                {{ booking.meta('drop-off_location') }},&nbsp;
+                {{ booking.meta('drop_off_postcode') }},&nbsp;                    
+                    </td>
+            </tr>
+            {% if booking.meta('return_pickup_postcode') %}
+            <tr>
+                <td>
+                {% if booking.meta('return_pick-up_property_number') %}
+                {{ booking.meta('return_pick-up_property_number') }},&nbsp;
+                {% endif %}
+                {{ booking.meta('return_pickup_location') }},&nbsp;
+                    {{ booking.meta('return_pickup_postcode') }}
+                    </td> <!-- Another custom field -->
+                    <td><i class="fa-solid fa-arrow-right"></i></td>
+                    <td>
+                    {{ booking.meta('return_dropoff_property_number') }}, &nbsp;
+                {{ booking.meta('return_drop-off_location') }},&nbsp;
+                {{ booking.meta('return_drop_off_postcode') }},&nbsp;                    
+                    </td>
+            
+            </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+{% else %}
+    <p>You have no bookings to show.</p>
+{% endif %}
+    </div>
+    </div>
+</div>
+
+</div>
+    </div>
+{% endif %}
+
+{% endblock %}

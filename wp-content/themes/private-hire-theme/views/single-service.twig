@@ -1,0 +1,28 @@
+{% extends 'base.twig' %}
+{% block content %}
+{% set title = post.title %}
+{% set page_intro = post.meta('intro_text') %}
+{% set hero_image = post.meta('service_image') %}
+{% set feature_style = post.meta('featurette_style') %}
+{% set feature_title = post.meta('featurette_title') %}
+{% set feature_subtitle = post.meta('featurette_sub-title') %}
+{% set feature_text = post.meta('featurette_text') %}
+{% set feature_image = post.meta('featurette_image') %}
+{% include './partial/hero.twig' with {
+    'title': title,
+    'introduction': page_intro,
+    'image_url': hero_image
+} 
+%}
+{# <pre>
+    {{ dump(post.meta()) }}
+</pre> #}
+{% include "./featurettes/featurette.twig" with {
+    'featurette_style': feature_style,
+    'featurette_title': feature_title,
+    'featurette_sub_title': feature_subtitle,
+    'featurette_text': feature_text,
+    'featurette_image': feature_image
+} %}
+
+{% endblock %}

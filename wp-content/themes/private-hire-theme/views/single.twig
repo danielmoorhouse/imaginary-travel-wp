@@ -1,0 +1,64 @@
+{% extends "base.twig" %}
+
+{% block content %}
+<div class="container pt-5">
+    <div class="row justify-content-center">
+	                <div class="col-lg-2 pt-3 mb-4">
+                    <img src="{{ post.thumbnail.src|resize(300, 300) }}" class="img-fluid rounded">
+                </div>
+        <div class="col-lg-10">
+            <article class="post-type-{{ post.post_type }} mb-5" id="post-{{ post.ID }}">
+                <!-- Thumbnail Image -->
+
+
+                <!-- Article Content -->
+                <section class="article-content">
+                    <h1 class="article-h1 mb-3">{{ post.title }}</h1>
+
+                    {# <p class="blog-author text-muted mb-4">
+                        <span>By</span> 
+                        <a href="{{ post.author.path }}" class="text-decoration-none">{{ post.author.name }}</a> 
+                        <span>&bull;</span> 
+                        <time datetime="{{ post.date|date('Y-m-d H:i:s') }}">{{ post.date }}</time>
+                    </p> #}
+                    <div class="article-body">
+                        {{ post.content }}
+						{% if post.meta('driver_id') %}
+						<p><strong>Driver ID:</strong> &nbsp;{{ post.meta('driver_id') }} </p>
+						<p><strong>Date of Birth:</strong> &nbsp;{{ post.meta('date_of_birth') }} </p>
+						<p><strong>License Number:</strong> &nbsp;{{ post.meta('license_number') }} </p>
+						<p><strong>Driver Full Address:</strong> &nbsp;{{ post.meta('driver_full_address') }} </p>
+						{% endif %}
+                    </div>
+					<div class="mt-3">
+                        <a href="{{ post.link }}" class="btn btn-primary btn-sm">{{ _e('edit') }}</a>
+                    </div>
+                </section>
+
+                <!-- Comment Section -->
+                {# <section class="comment-box mt-5">
+                    <div class="comments">
+                        {% if post.comments %}
+                            <h3 class="mb-4">Comments</h3>
+                            <div class="list-group">
+                                {% for cmt in post.comments %}
+                                    {% include "comment.twig" with {comment:cmt} %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {% if post.comment_status == "closed" %}
+                        <p class="text-muted mt-4">Comments for this post are closed.</p>
+                    {% else %}
+                        <!-- Comment Form -->
+                        <div class="mt-4">
+                            {% include "comment-form.twig" %}
+                        </div>
+                    {% endif %}
+                </section> #}
+            </article>
+        </div>
+    </div>
+</div><!-- /container -->
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.twig" %}
+
+{% block content %}
+{% include './partial/hero.twig' with {
+	'title': post.title,
+	'introduction': post.meta('intro_text'),
+	'image_url': post.meta('hero_image'),
+	'link_1_url': post.meta('link_1_path'),
+	'link_1_text': post.meta('link_1_text') 
+} %}
+	<div class="container">
+		<article class="post-type-{{post.post_type}}" id="post-{{post.ID}}">
+			<section class="article-content font-montserrat">
+			
+				<div class="article-body">
+					{{post.content}}
+				</div>
+			</section>
+		</article>
+	</div><!-- /content-wrapper -->
+{% endblock %}

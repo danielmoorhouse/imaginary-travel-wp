@@ -1,0 +1,211 @@
+{% extends "base.twig" %}
+
+{% block content %}
+{% include './partial/hero.twig' with {
+    'title': post.title,
+    'introduction': post.meta('intro_text')
+} %}
+<div class="container mt-5">
+{% if user %}
+ {% set user_id = user.id %} 
+{% set user_first_name = user.meta('first_name') %}
+{% set user_last_name = user.meta('last_name') %}
+{% set user_email = user.user_email %}
+{% set user_house_number = user.meta('house_number') %}
+{% set user_street = user.meta('street_name') %}
+{% set user_postcode = user.meta('postcode') %}
+<form id="booking" method="post" action="" class="custom-acf-form">
+<input type="hidden" name="acf[field_66cf2ae7f7fc7]" id="user_id" value="{{ user_id }}">
+   <div class="card service-card bg-low-op-green">
+   <div class="card-head text-bg-green p-3 font-montserrat">
+   <h2><i class="fa-solid fa-user-check"></i> &nbsp;Primary passenger</h2>
+   </div>
+   <div class="card-body p-4">
+        <div class="row">
+            <div class="col-4 p-2">
+                <label for="{{ fullname.key }}"><i class="fa-solid fa-user"></i> &nbsp;{{ fullname.label }}</label>
+                    <input class="input-alt" id="acf-field_66c6423dcf0f5" type="hidden" name="acf[field_66c6423dcf0f5]" value="">
+                    <input type="text" name="acf[field_66c6423dcf0f5]" value="{{ user_first_name }} {{ user_last_name }}">
+                {# {{ function('acf_render_field', fullname ) }} #}
+            </div>
+             <div class="col-4 p-2">
+                <label for="{{ email.key }}"><i class="fa-solid fa-envelope"></i> &nbsp;{{ email.label }}</label>
+                    <input class="input-alt" id="acf-field_66c6429ecf0f6" type="hidden" name="acf[field_66c6429ecf0f6]" value="">
+                    <input type="text" name="acf[field_66c6429ecf0f6]" value="{{ user_email }}">
+                {# {{ function('acf_render_field', email) }} #}
+            </div>
+            <div class="col-4 p-2">
+                <label for="{{phone_number.key}}"><i class="fa-solid fa-phone"></i> &nbsp;{{ phone_number.label }}</label>
+          
+                {{ function('acf_render_field', phone_number) }}
+            </div>
+        </div> <!--end row-->
+        <div class="row">
+        <div class="col-4 p-2">
+         <label class="mb-2" for="{{travel_type.key}}"><i class="fa-solid fa-van-shuttle"></i> &nbsp;{{ travel_type.label }}</label><br>
+          
+                {{ function('acf_render_field', travel_type) }}
+        </div>
+        <div class="col-4 p-2">
+            <label class="mb-2" for="{{ passenger_number.key }}"><i class="fa-solid fa-people-group"></i> &nbsp;{{ passenger_number.label }}</label><br>
+                {{ function('acf_render_field', passenger_number) }}
+        </div>
+                <div class="col-4 p-2">
+            <label class="mb-2" for="{{ large_bags_cases.key }}"><i class="fa-solid fa-suitcase"></i> &nbsp;{{ large_bags_cases.label }}</label><br>
+                {{ function('acf_render_field', large_bags_cases) }}
+        </div>
+        </div>
+        </div>
+        </div>
+<div id="outbound" class="row">
+<div class="col-12 p-2">
+         <div class="card service-card bg-low-op-blue">
+         <div class="card-head p-4 text-bg-blue font-montserrat mb-3">
+         <h2><i class="fa-solid fa-arrow-right"></i> &nbsp;Outbound journey</h2>
+         </div>
+            <div class="card-body p-4">
+            <div class="row">
+<div class="col-6">
+                <label class="mb-2" for="{{ pickup_house_number.key }}"><i class="fa-solid fa-location-dot"></i> &nbsp;{{ pickup_house_number.label }}</label>
+                <input type="hidden" id="acf-field_66ca5342feabb" class="input-alt" name="acf[field_66ca5342feabb]" value="">
+                <input type="text" name="acf[field_66ca5342feabb]" value="{{ user_house_number }}">
+                {# {{ function('acf_render_field', pickup_house_number) }} #}
+                <label class="mb-2" for="{{ pickup_location.key }}"><i class="fa-solid fa-location-dot"></i> &nbsp;{{ pickup_location.label }}</label>
+                {# <input type="hidden"  name="acf[field_66c6430b856ae]" value=""> #}
+                <input type="text" id="acf-field_66c6430b856ae" name="acf[field_66c6430b856ae]" value="{{ user_street }}">
+                {# {{ function('acf_render_field', pickup_location) }} #}
+
+                <label class="mb-2" for="{{ pickup_postcode.key }}"><i class="fa-solid fa-location-dot"></i> &nbsp;{{ pickup_postcode.label }}</label>
+                {# <input type="hidden"  name="acf[field_66c8a13b9b1a3]" value="{{ user_postcode }}"> #}
+                <input type="text" id="acf-field_66c8a13b9b1a3" name="acf[field_66c8a13b9b1a3]" value="{{ user_postcode}}">
+
+                <label for="{{ map_test.key }}">{{ map_test.label }}</label>
+                {{ function('acf_render_field', map_test) }}
+
+
+                 <label class="mb-2" for="{{ pickup_date.key }}"><i class="fa-solid fa-calendar-days"></i> &nbsp;{{ pickup_date.label }}</label>
+                {# {{ function('acf_render_field', pickup_date) }} #}
+                <input type="hidden" id="acf-field_66c644b2856af" class="input-alt" name="acf[field_66c644b2856af]" value="">
+                <input type="date" name="acf[field_66c644b2856af]">
+                 <label class="mb-2" for="{{ pickup_time.key }}"><i class="fa-solid fa-clock"></i> &nbsp;{{ pickup_time.label }}</label>
+                {# {{ function('acf_render_field', pickup_time) }} #}
+                <input type="hidden" id="acf-field_66c64511856b0" class="input-alt" name="acf[field_66c64511856b0]" value="">
+                <input type="time" name="acf[field_66c64511856b0]">
+</div>
+<div class="col-6">
+<div class="flight" id="flight-number">
+                 <label class="mb-2" for="{{ flight_number.key }}"><i class="fa-solid fa-plane-departure"></i> &nbsp;{{ flight_number.label }}</label>
+                {{ function('acf_render_field', flight_number) }}
+</div>
+<div class="drop-off" id="drop-off-number">
+                <label class="mb-2" for="{{ drop_off_property_number.key }}"><i class="fa-solid fa-location-dot"></i> &nbsp;{{ drop_off_property_number.label }} </label>
+                {{ function('acf_render_field', drop_off_property_number) }}
+</div>
+                <label class="mb-2" for="{{ drop_off.key }}"><i class="fa-solid fa-location-dot"></i> &nbsp;{{ drop_off.label }} </label>
+                {{ function('acf_render_field', drop_off) }}
+
+                <label class="mb-2" for="{{ drop_off_postcode.key }}"><i class="fa-solid fa-location-dot"></i> &nbsp;{{ drop_off_postcode.label }} </label> 
+                {{ function('acf_render_field', drop_off_postcode) }}
+</div>
+                </div>
+    </div>
+         </div>
+</div>
+</div>
+<div id="return" class="row d-none">
+<div class="col-12 p-2">
+         <div class="card service-card bg-low-op-purple">
+         <div class="card-head p-4 text-bg-purple font-montserrat mb-3">
+         <h2><i class="fa-solid fa-arrow-left"></i> &nbsp;Return journey</h2>
+         <p><i>"A comfortable, reliable trip back home"</i></p>
+         </div>
+<div class="card-body p-4">
+<div class="row">
+<div class="col-6">
+                <label class="mb-2" for="{{ return_pickup_house_number.key }}"><i class="fa-solid fa-location-dot"></i> &nbsp;{{ return_pickup_house_number.label }}</label>
+                {{ function('acf_render_field', return_pickup_house_number) }}
+
+                <label class="mb-2" for="{{ return_pickup.key }}"><i class="fa-solid fa-location-dot"></i> &nbsp;{{ return_pickup.label }}</label>
+                {{ function('acf_render_field', return_pickup) }}
+
+                <label class="mb-2" for="{{ return_pickup_postcode.key }}"><i class="fa-solid fa-location-dot"></i> &nbsp;{{ return_pickup_postcode.label }}</label>
+                {{ function('acf_render_field', return_pickup_postcode) }}
+
+
+                 <label class="mb-2" for="{{ return_pickup_date.key }}"><i class="fa-solid fa-calendar-days"></i> &nbsp;{{ return_pickup_date.label }}</label>
+                {# {{ function('acf_render_field', return_pickup_date) }} #}
+                <input type="hidden" id="acf-field_66c64a3f11d3f" name="acf[field_66c64a3f11d3f]" value="">
+                <input type="date" name="acf[field_66c64a3f11d3f]">
+
+                 <label class="mb-2" for="{{ return_pickup_time.key }}"><i class="fa-solid fa-clock"></i> &nbsp;{{ return_pickup_time.label }}</label>
+                {# {{ function('acf_render_field', return_pickup_time) }}  #}
+
+                <input type="hidden" id="acf-field_66c64ab411d40" class="input-alt" name="acf[field_66c64ab411d40]" value="">
+                <input type="time" name="acf[field_66c64ab411d40]">
+                </div>
+<div class="col-6">
+<div id="return-flight-number" class="flight">
+                 <label class="mb-2" for="{{ return_flight_number.key }}"><i class="fa-solid fa-plane-arrival"></i> &nbsp;{{ return_flight_number.label }} </label>
+                {{ function('acf_render_field', return_flight_number) }}
+</div>
+            <label class="mb-2" for="{{ return_dropoff_property_number.key }}"><i class="fa-solid fa-location-dot"></i> &nbsp;{{ return_dropoff_property_number.label }}</label>
+                            <input type="hidden" id="acf-field_66ca5b4d45ffd" class="input-alt" name="acf[field_66ca5b4d45ffd]" value="">
+                <input type="number" name="acf[field_66ca5b4d45ffd]" value="{{ user_house_number }}">
+                {# {{ function('acf_render_field', return_dropoff_property_number) }} #}
+
+                <label class="mb-2" for="{{ return_drop_off.key }}"><i class="fa-solid fa-location-dot"></i> &nbsp;{{ return_drop_off.label }}</label>
+                <input type="hidden" id="acf-field_66c738ea664bf" name="acf[field_66c738ea664bf]" value="">
+                <input type="text" name="acf[field_66c738ea664bf]" value="{{ user_street }}">
+                {# {{ function('acf_render_field', return_drop_off) }} #}
+
+                <label class="mb-2" for="{{ return_drop_off_postcode.key }}"><i class="fa-solid fa-location-dot"></i> &nbsp;{{ return_drop_off_postcode.label }}</label>
+                <input type="hidden" id="acf-field_66c8a2619b1a6" name="acf[field_66c8a2619b1a6]" value="">
+                <input type="text" name="acf[field_66c8a2619b1a6]" value="{{ user_postcode}}">
+                {# {{ function('acf_render_field', return_drop_off_postcode) }} #}
+
+                </div>
+                </div>
+                </div>
+         </div>
+</div>
+</div>
+
+    {# {% endfor %} #}
+    <div class="submit-row text-center pt-3 pb-5">
+        <button type="submit" class="btn btn-success btn-lg p-3 w-100">Book your journey</button>
+    </div>
+</form>
+{% endif %}
+</div>
+<script>
+document.getElementById('acf-field_66c64592856b2').addEventListener('change', function() {
+    let selectedValue = this.value;
+    //alert(`Selected travel type: ${selectedValue}`);
+
+        if(selectedValue === 'Local journey return') {
+        document.getElementById('outbound').classList.remove('d-none');
+        document.getElementById('return').classList.remove('d-none');
+        document.getElementById('flight-number').classList.add('d-none');
+        document.getElementById('return-flight-number').classList.add('d-none');
+        document.getElementById('drop-off-number').classList.remove('d-none');
+
+    }
+        if(selectedValue === 'Local journey one-way') {
+        document.getElementById('return').classList.add('d-none');
+        document.getElementById('flight-number').classList.add('d-none');
+         document.getElementById('drop-off-number').classList.remove('d-none');
+    }
+        if(selectedValue === 'Airport one-way') {
+        document.getElementById('return').classList.add('d-none');
+        document.getElementById('drop-off-number').classList.add('d-none');
+        document.getElementById('flight-number').classList.remove('d-none');
+    }
+    if(selectedValue === 'Airport return') {
+        document.getElementById('return').classList.remove('d-none');
+        document.getElementById('flight-number').classList.remove('d-none');
+         document.getElementById('return-flight-number').classList.remove('d-none');
+    }
+});
+
+</script>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "portal-base.twig" %}
+{# <pre>
+    {{ dump(post.meta()) }}
+</pre> #}
+{% block content %}
+{% set driver_id = post.meta('driver_id') %}
+{% set license_number = post.meta('license_number') %}
+{% set date_of_birth = post.meta('date_of_birth') %}
+{% set joined_portal = post.post_date_gmt|date('d/m/Y H:i:s') %}
+{% set driver_name = post.title %}
+<section>
+{# <pre>
+    {{ dump(post) }}
+</pre> #}
+<div class="container font-montserrat">
+<div class="row">
+<div class="col-5 p-5">
+<span class="badge bg-primary">Driver</span>
+<h1 class="display-4 fw-500">{{ driver_name }}</h1>
+<p>DOB: {{ date_of_birth }}</p>
+<p>License: {{ license_number }}</p>
+<p>Joined staff portal: {{ joined_portal }}</p>
+</div>
+<div class="col-7 p-5">
+<h2>Job record</h2>
+<table>
+<thead>
+<tr>
+<th class="cell-width-20">Job ID</th>
+<th class="cell-width-25">From</th>
+<th class="cell-width-25">To</th>
+<th class="cell-width-25">Job Duration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+
+
+{% endblock %}

@@ -1,0 +1,345 @@
+{% extends "base.twig" %}
+
+{% block content %}
+	{% set assigned_driver = post.meta('assigned_driver') %}
+	{% set assigned_vehicle = post.meta('assigned_vehicle') %}
+    	{% set assigned_driver_return = post.meta('assigned_driver_return') %}
+	{% set assigned_vehicle_return = post.meta('assigned_vehicle_return') %}
+
+	<div class="container pt-5 font-montserrat">
+
+		<div class="row justify-content-center">
+
+			<div class="col-lg-12">
+				<article class="post-type-{{ post.post_type }} mb-5" id="post-{{ post.ID }}">
+					<!-- Thumbnail Image -->
+
+
+					<!-- Article Content -->
+						<section
+						class="article-content"> {# <p class="blog-author text-muted mb-4">
+							                        <span>By</span> 
+							                        <a href="{{ post.author.path }}" class="text-decoration-none">{{ post.author.name }}</a> 
+							                        <span>&bull;</span> 
+							                        <time datetime="{{ post.date|date('Y-m-d H:i:s') }}">{{ post.date }}</time>
+							                    </p> #}
+						<div class="article-body">
+
+							<div class="row">
+								<div class="col-12">
+		
+												<h5 class="font-montserrat p-3" style="border: 2px solid #4b4b4b;border-radius:10px;">
+									
+
+											Booking #{{post.id}}&nbsp;&nbsp;
+													<i class="fa-solid fa-user fz-15"></i>
+												{{ post.title }}
+												
+													&nbsp;&nbsp;<i class="fa-solid fa-van-shuttle fz-15"></i>
+													{{ post.meta('travel_type') }}
+
+												
+													&nbsp;&nbsp;<i class="fa-solid fa-envelope fz-15"></i>
+													&nbsp;{{ post.meta('email') }}
+													&nbsp;&nbsp;
+													<i class="fa-solid fa-phone fz-15"></i>
+													&nbsp;{{ post.meta('phone_number') }}
+												</h5>
+							
+								</div>
+
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-6">
+								<div class="card service-card bg-ghost-white">
+									<div class="card-head p-4 text-bg-blue font-montserrat mb-3">
+										<h2 class="mb-2">
+											<i class="fa-solid fa-van-shuttle"></i>
+											&nbsp;Outbound journey</h2>
+									</div>
+									<div class="card-body p-4 fz-20">
+										<p>
+											<i class="fa-solid fa-location-dot"></i>
+											&nbsp;{{ post.meta('pick-up_location') }},
+											{{ post.meta('pickup_postcode') }}
+											<br><i class="fa-solid fa-arrow-right"></i>
+											&nbsp;{{ post.meta('drop-off_location') }},
+											{{ post.meta('drop_off_postcode') }}</p>
+										<p>
+											<i class="fa-solid fa-calendar"></i>
+											&nbsp;{{ post.meta('pick-up_date') }}
+											&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-clock"></i>
+											&nbsp;{{ post.meta('pick-up_time')|date('H:i') }}
+											&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-people-group"></i>
+											&nbsp;{{ post.meta('passenger_number') }}
+											&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-suitcase"></i>
+											&nbsp;{{ post.meta('number_of_large_bags_cases') }}
+											{% if post.meta('flight_number') %}
+												&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-plane-departure"></i>
+												&nbsp;{{ post.meta('flight_number') }}
+											{% endif %}
+
+										</p>
+									</div>
+									<div class="card-footer p-4">
+									<h5>Driver & vehicle</h5>
+									{% if assigned_driver %}
+											{% for field in assigned_driver %}
+												<p class="fz-20">
+													<i class="fa-solid fa-id-card"></i>
+													&nbsp;{{ field.post_title }}
+												</p>
+											{% endfor %}
+											{% else %}
+											<form action="" method="post">
+											<input type="hidden" name="post_id" value="{{ post.ID }}">
+											<select class="form-select" name="driver_id" id="driver_id">
+									{% for driver in drivers %}
+												<option value="{{ driver.id }}">{{ driver.post_title }}</option>
+											{% endfor %}
+											</select>
+											<button class="btn btn-primary" type="submit" name="assign_driver">Add driver</button>
+											</form>
+											{% endif %}
+									{% if assigned_vehicle %}
+											{% for value in assigned_vehicle %}
+												<p class="fz-17">
+													<i class="fa-solid fa-van-shuttle"></i>
+													&nbsp;{{ value.post_title }}
+													&nbsp;&nbsp;&nbsp;<span class="text-bg-registration fz-17">{{ value.registration }}</span>
+												</p>
+												<p class="fz-15">
+													Passenger capacity:
+													{{ value.passenger_seats }}
+													&nbsp;&bullet;&nbsp; Large suitcase capacity:
+													{{ value.large_suitcase_capacity }}
+													&nbsp;&bullet;&nbsp; Fuel:
+													{{ value.fuel_type }}
+												</p>
+
+											{% endfor %}
+											{% else %}
+ 
+											{% endif %}
+										{# <p>
+											<i class="fa-solid fa-circle-info"></i>
+											&nbsp; Our driver will arrive at
+											<strong>{{ post.meta('pick-up_time')|date('H:i') }}</strong>. Please be ready to load bags and depart.</p> #}
+									</div>
+								</div>
+							</div>
+
+							{% if post.meta('return_pickup_location') %}
+								<div class="col-6">
+									<div class="card service-card bg-ghost-white">
+										<div class="card-head p-4 text-bg-purple font-montserrat mb-3">
+											<h2 class="mb-2">
+												<i class="fa-solid fa-van-shuttle"></i>
+												&nbsp;Return journey</h2>
+										</div>
+										<div class="card-body p-4 fz-20">
+											<p>
+												<i class="fa-solid fa-location-dot"></i>
+												&nbsp;{{ post.meta('return_pickup_location') }},
+												{{ post.meta('return_pickup_postcode') }}
+												<br><i class="fa-solid fa-arrow-right"></i>
+												&nbsp;{{ post.meta('return_drop-off_location') }},
+												{{ post.meta('return_drop_off_postcode') }}</p>
+											<p>
+												<i class="fa-solid fa-calendar"></i>
+												&nbsp;{{ post.meta('return_pick-up_date') }}
+												&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-clock"></i>
+												&nbsp;{{ post.meta('return_pick-up_time')|date('H:i') }}
+												&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-people-group"></i>
+												&nbsp;{{ post.meta('passenger_number') }}
+												&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-suitcase"></i>
+												&nbsp;{{ post.meta('number_of_large_bags_cases') }}
+												{% if post.meta('flight_number') %}
+													&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-plane-arrival"></i>
+													&nbsp;{{ post.meta('return_flight_number') }}
+												{% endif %}
+
+											</p>
+										</div>
+										<div class="card-footer p-3">
+									{% if post.meta('return_pickup_postcode') %}
+											{% if assigned_driver_return %}
+											{% for field in assigned_driver_return %}
+                                            <p class="fw-600 d-inline-block text-bg-purple p-2 br-10">Return</p>
+												<p class="fz-20 fw-600">
+													<i class="fa-solid fa-id-card"></i>
+													&nbsp;{{ field.post_title }}
+												</p>
+											{% endfor %}
+										{% else %}
+											<form action="" method="post">
+											<input type="hidden" name="post_id" value="{{ post.ID }}">
+											<select class="form-select add-driver-vehicle" name="return_driver_id" id="return_driver_id">
+											{% for driver in drivers %}
+												<option value="{{ driver.id }}">{{ driver.post_title }}</option>
+											{% endfor %}
+											</select>
+											<button class="btn btn-primary" type="submit" name="assign_return_driver">Add return driver</button>
+											</form>
+											{% endif %}
+											{% endif %}
+											{# <p>
+												<i class="fa-solid fa-circle-info"></i>
+												&nbsp; Our driver will arrive at the airport in time for your arrival.</p> #}
+										</div>
+									</div>
+								</div>
+							{% endif %}
+									{# <div class="col-12 text-bg-ghost-white mt-2">
+									<div class="card service-card mb-3">
+										<div class="card-head font-montserrat">
+											<div class="w-100 p-4 mb-3 text-bg-dark-grey">
+												<h2>
+													<i class="fa-solid fa-gauge-high"></i>
+													&nbsp;Driver & vehicle details
+												</h2>
+											</div>
+										</div>
+										<div class="card-body px-4">
+										<div class="row">
+										<div class="col-6">
+                                        <p class="fw-600 text-bg-blue d-inline-block p-2 br-10">Outbound</p>
+
+											{% if assigned_vehicle %}
+											{% for value in assigned_vehicle %}
+												<p class="fz-17">
+													<i class="fa-solid fa-van-shuttle"></i>
+													&nbsp;{{ value.post_title }}
+													&nbsp;&nbsp;&nbsp;<span class="text-bg-registration fz-17">{{ value.registration }}</span>
+												</p>
+												<p class="fz-15">
+													Passenger capacity:
+													{{ value.passenger_seats }}
+													&nbsp;&bullet;&nbsp; Large suitcase capacity:
+													{{ value.large_suitcase_capacity }}
+													&nbsp;&bullet;&nbsp; Fuel:
+													{{ value.fuel_type }}
+												</p>
+
+											{% endfor %}
+											{% else %}
+											<form action="" method="post">
+											<input type="hidden" name="post_id" value="{{ post.ID }}">
+											<select class="form-select" name="vehicle_id" id="vehicle_id">
+											{% for vehicle in vehicles %}
+												<option value="{{ vehicle.id }}">{{ vehicle.post_title }}</option>
+											{% endfor %}
+											</select>
+											<button class="btn btn-primary btn-sm" type="submit" name="assign_vehicle">Add vehicle</button>
+											</form>
+											{% endif %}
+											</div>
+
+
+
+											<div class="col-6">
+											{% if post.meta('return_pickup_postcode') %}
+											{% if assigned_driver_return %}
+											{% for field in assigned_driver_return %}
+                                            <p class="fw-600 d-inline-block text-bg-purple p-2 br-10">Return</p>
+												<p class="fz-20 fw-600">
+													<i class="fa-solid fa-id-card"></i>
+													&nbsp;{{ field.post_title }}
+												</p>
+											{% endfor %}
+										{% else %}
+											<form action="" method="post">
+											<input type="hidden" name="post_id" value="{{ post.ID }}">
+											<select class="form-select" name="return_driver_id" id="return_driver_id">
+											{% for driver in drivers %}
+												<option value="{{ driver.id }}">{{ driver.post_title }}</option>
+											{% endfor %}
+											</select>
+											<button class="btn btn-primary" type="submit" name="assign_return_driver">Add return driver</button>
+											</form>
+											{% endif %}
+
+											{% if assigned_vehicle_return %}
+											{% for value in assigned_vehicle_return %}
+												<p class="fz-17">
+													<i class="fa-solid fa-van-shuttle"></i>
+													&nbsp;{{ value.post_title }}
+													&nbsp;&nbsp;&nbsp;<span class="text-bg-registration">{{ value.registration }}</span>
+												</p>
+												<p class="fz-15">
+													Passenger capacity:
+													{{ value.passenger_seats }}
+													&nbsp;&bullet;&nbsp; Large suitcase capacity:
+													{{ value.large_suitcase_capacity }}
+													&nbsp;&bullet;&nbsp; Fuel:
+													{{ value.fuel_type }}
+												</p>
+                                                {% endfor %}
+												{% else %}
+											<form action="" method="post">
+											<input type="hidden" name="post_id" value="{{ post.ID }}">
+											<select name="return_vehicle_id" id="return_vehicle_id">
+											{% for vehicle in vehicles %}
+												<option value="{{ vehicle.id }}">{{ vehicle.post_title }}</option>
+											{% endfor %}
+											</select>
+											<button type="submit" name="assign_return_vehicle">Add vehicle</button>
+											</form>
+												{% endif %}
+												{% endif %}
+                                            
+											</div>
+												</div>
+												</div>
+											<div class="card-footer text-bg-ghost-white">
+
+
+												<p>
+													<i class="fa-solid fa-info-circle"></i>
+													&nbsp;Large suitcases are generally considered to be around 70-100 litres in capacity.</p>
+
+											
+										</div>
+										</div>
+
+									
+
+									</div> #}
+								</div>
+						</div>
+					</div>
+					<div class="mt-3">
+						<a href="{{ post.link }}" class="btn btn-primary btn-sm">{{ _e('edit') }}</a>
+					</div>
+				</section>
+
+				<!-- Comment Section -->
+				{# <section class="comment-box mt-5">
+				                    <div class="comments">
+				                        {% if post.comments %}
+				                            <h3 class="mb-4">Comments</h3>
+				                            <div class="list-group">
+				                                {% for cmt in post.comments %}
+				                                    {% include "comment.twig" with {comment:cmt} %}
+				                                {% endfor %}
+				                            </div>
+				                        {% endif %}
+				                    </div>
+				
+				                    {% if post.comment_status == "closed" %}
+				                        <p class="text-muted mt-4">Comments for this post are closed.</p>
+				                    {% else %}
+				                        <!-- Comment Form -->
+				                        <div class="mt-4">
+				                            {% include "comment-form.twig" %}
+				                        </div>
+				                    {% endif %}
+				                </section> #}
+			</article>
+		</div>
+	</div>
+</div>
+<!-- /container -->{% endblock %}
+

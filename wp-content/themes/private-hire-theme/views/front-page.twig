@@ -1,0 +1,70 @@
+{% extends "base.twig" %}
+{% block content %}
+
+{% include "html-header.twig" %}
+
+<body {{ body_class }}>
+
+{% if hero %}
+ {% for field in hero %}
+ {% include './partial/front-page-hero.twig' with {
+    'title': field.title,
+    'introduction': field.intro_text,
+    'image_url': field.hero_image,
+    'link_1_url': field.link_1_url,
+    'link_1_text': field.link_1_text,
+    'link_2_url': field.link_2_url,
+    'link_2_text': field.link_2_text,
+ } %}
+ {% endfor %}
+
+{% else %}
+    <!-- Hero Section -->
+    <section class="hero-section bg-ghost-white text-charcoal font-montserrat">
+        <div class="container">
+            <h1>Imaginary Travel Services</h1>
+            <p>Your trusted partner for airport runs, special occasions, and more</p>
+            <a href="/services" class="btn btn-lg bg-black text-ghost-white">Our Services</a>
+        </div>
+    </section>
+{% endif %}
+<!-- featurettes -->
+    {% include './featurettes/front-page-featurette-1.twig' %}
+    <!-- Services Section -->
+    {% if services %}
+    <section id="services" class="services-section text-bg-blue font-montserrat">
+        <div class="container">
+            <h2 class="display-5 fw-500 text-center mb-3">Our Services</h2>
+            <div class="row g-4 py-5 row-cols-1 row-cols-lg-4">
+            {% for service in services %}
+                {% include './partial/services.twig' with {
+                    'service_image': service.service_image,
+                    'service_name': service.service_name,
+                    'service_overview': service.service_overview 
+                } %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}  
+    {% include './featurettes/front-page-featurette-2.twig' %}
+    {% if why_us %}
+    <section id="why-choose-us" class="text-bg-blue font-montserrat">
+      <div class="container px-4 py-5">
+    <h2 class="text-center display-5 fw-500">Why choose us?</h2>
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+    {% for item in why_us %}
+{% include './partial/why-choose-us.twig' with {
+    'title': item.title,
+    'short_description': item.short_description,
+    'link_url': item.link_url,
+    'link_text': item.link_text,
+    'image_url': item.image_url
+} %}
+    {% endfor %}
+        </div>
+  </div>
+  </section>
+    {% endif %}
+</body>
+{% endblock %}

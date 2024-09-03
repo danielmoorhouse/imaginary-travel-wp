@@ -1,0 +1,22 @@
+  
+  <section class="text-bg-blue font-montserrat" style="min-height:22em">
+  <div class="container col-xxl-8 px-4 py-3">
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+      <div class="col-10 col-sm-8 col-lg-6">
+      {% if image_url %}
+         <img src="{{ image_url }}" class="d-block mx-lg-auto img-fluid w-40" alt="Bootstrap Themes" loading="lazy">
+         {% endif %}
+      </div>
+      <div class="col-lg-6">
+        <h1 class="display-3 mb-3">{{ title }}</h1>
+        <p class="lead fw-600">{{ introduction }}</p>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+        {% if link_1_url %}
+          <a href="{{ link_1_url }}" class="btn btn-primary btn-lg px-4 me-md-2 fw-600">{{ link_1_text }}</a>
+          {% endif %}
+          {# <a href="{{ link_2_url }}" class="btn btn-outline-primary bg-ghost-white btn-lg px- fw-600">{{ link_2_text }}</a> #}
+        </div>
+      </div>
+    </div>
+  </div>
+  </section>

@@ -1,0 +1,136 @@
+{% extends "base.twig" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center">Book a Private Hire Vehicle</h1>
+    <form method="post" action="/wp-admin/admin-post.php" class="mt-4">
+        <input type="hidden" name="action" value="submit_booking_form">
+<div class="row p-5">
+<div class="col-4">
+        <!-- Full Name -->
+        <div class="mb-2">
+            <label for="full_name" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="full_name" name="full_name" required>
+        </div>
+        </div>
+<div class="col-4">
+        <!-- Email -->
+        <div class="mb-2">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        </div>
+<div class="col-4">
+        <!-- Phone Number -->
+        <div class="mb-2">
+            <label for="phone_number" class="form-label">Phone Number</label>
+            <input type="number" class="form-control" id="phone_number" name="phone_number" required>
+        </div>
+        </div>
+</div>
+{#<div class="container p-5">
+<p>Number of Passengers</p>
+
+<div class="mx-auto">
+<div class="form-check form-check-inline">
+  <input type="radio" class="form-check-input" id="radio1" name="optradio" value="2" checked>2
+  <label class="form-check-label" for="radio1"></label>
+</div>
+<div class="form-check form-check-inline">
+  <input type="radio" class="form-check-input" id="radio2" name="optradio" value="3">3
+  <label class="form-check-label" for="radio2"></label>
+</div>
+<div class="form-check form-check-inline">
+  <input type="radio" class="form-check-input" id="radio3" name="optradio" value="4">4
+  <label class="form-check-label"></label>
+</div>
+<div class="form-check form-check-inline">
+  <input type="radio" class="form-check-input" id="radio4" name="optradio" value="5" checked>5
+  <label class="form-check-label" for="radio4"></label>
+</div>
+<div class="form-check form-check-inline">
+  <input type="radio" class="form-check-input" id="radio5" name="optradio" value="6">6
+  <label class="form-check-label" for="radio5"></label>
+</div>
+<div class="form-check form-check-inline">
+  <input type="radio" class="form-check-input" id="radio6" name="optradio" value="7">7
+  <label class="form-check-label" for="radio6"></label>
+</div>
+<div class="form-check form-check-inline">
+  <input type="radio" class="form-check-input" id="radio7" name="optradio" value="8">8
+  <label class="form-check-label" for="radio7"></label>
+</div>
+</div>
+</div> #}
+<div class="row">
+        <!-- Pick-up Location -->
+        <div class="col-6 p-2">
+         <div class="card service-card p-5">
+         <div class="card-head"><h2>Outbound Details</h2></div>
+        <div class="mb-3">
+            <label for="pick-up_location" class="form-label">Pick-up Location</label>
+            <input type="text" class="form-control" id="pick-up_location" name="pick-up_location" required>
+        </div>
+
+        <!-- Pick-up Date -->
+        <div class="mb-3">
+            <label for="pick-up_date" class="form-label">Pick-up Date</label>
+            <input type="date" class="form-control" id="pick-up_date" name="pick-up_date" required>
+        </div>
+
+        <!-- Pick-up Time -->
+        <div class="mb-3">
+            <label for="pick-up_time" class="form-label">Pick-up Time</label>
+            <input type="time" class="form-control" id="pick-up_time" name="pick-up_time" required>
+        </div>
+                <div class="mb-3">
+            <label for="drop-off_location" class="form-label">Drop-off Location</label>
+            <input type="text" class="form-control" id="drop-off_location" name="drop-off_location" required>
+        </div>
+                <!-- Flight Number -->
+        <div class="mb-3">
+            <label for="flight_number" class="form-label">OUTBOUND: Flight Number</label>
+            <input type="text" class="form-control" id="flight_number" name="flight_number" required>
+        </div>
+        </div>
+</div>
+<div class="col-6 p-2">
+        <!-- Drop-off Location -->
+
+
+<div class="card service-card p-5">
+
+<div class="card-head"><h2>Return Details</h2></div>
+
+
+
+        <!-- RETURN: Pick-up Location -->
+        <div class="mb-3">
+            <label for="return_pickup_location" class="form-label">RETURN: Pick-up Location</label>
+            <input type="text" class="form-control" id="return_pickup_location" name="return_pickup_location">
+        </div>
+
+        <!-- RETURN: Pick-up Date -->
+        <div class="mb-3">
+            <label for="return_pick-up_date" class="form-label">RETURN: Pick-up Date</label>
+            <input type="date" class="form-control" id="return_pick-up_date" name="return_pick-up_date">
+        </div>
+
+        <!-- RETURN: Pick-up Time -->
+        <div class="mb-3">
+            <label for="return_pick-up_time" class="form-label">RETURN: Pick-up Time</label>
+            <input type="time" class="form-control" id="return_pick-up_time" name="return_pick-up_time">
+        </div>
+        <!-- Return Flight Number -->
+        <div class="mb-3">
+            <label for="return_flight_number" class="form-label">RETURN: Flight Number</label>
+            <input type="text" class="form-control" id="return_flight_number" name="return_flight_number">
+        </div>
+        </div>
+        </div>
+        </div>
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Submit Booking</button>
+    </form>
+</div>
+{% endblock %}

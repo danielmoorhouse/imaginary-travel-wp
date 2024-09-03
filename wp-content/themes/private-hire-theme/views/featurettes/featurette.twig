@@ -1,0 +1,30 @@
+<section class="font-montserrat py-5 min-h-80-vh">
+<div class="container py-5 text-blue">
+    {% if featurette_style is same as('text-right') %}
+    <div class="row featurette">
+      <div class="col-md-7 order-md-2 py-5 px-3">
+        <h2 class="display-5 fw-500">{{ featurette_title }} <br> <span class="fz-35 text-muted">{{ featurette_sub_title }}</span></h2>
+        <p class="lead fw-500 text-muted mt-2 lh-3">{{ featurette_text }}</p>
+    
+      </div>
+      <div class="col-md-5 order-md-1 p-5">
+        <img src="{{ featurette_image }}" class="img-rounded w-75" alt="">
+      </div>
+    </div>
+    {% endif %}
+
+        {% if featurette_style is same as('text-left') %}
+        <div class="row featurette">
+      <div class="col-md-7 order-md-1 py-5 px-3">
+        <h2 class="display-5 fw-500">{{ featurette_title }}  <br> <span class="fz-35 text-muted">{{ featurette_sub_title }}</span></h2>
+        <p class="lead fw-500 lh-3 text-muted mt-2">
+            {{ featurette_text }}
+   
+      </div>
+      <div class="col-md-5 order-md-2 p-5">
+        <img src="{{ featurette_image }}" class="img-rounded w-75" alt="">
+      </div>
+    </div>
+    {% endif %}
+    </div>
+    </section>

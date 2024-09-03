@@ -1,0 +1,313 @@
+/*
+ * Theme Name: My Timber 2.x Starter Theme
+ * Description: Starter Theme to use with Timber
+ * Author: Upstatement and YOU!
+*/
+
+/* fonts */
+
+.font-montserrat {
+    font-family: "Montserrat", sans-serif;
+}
+.fz-13 {
+    font-size: 13px!important;
+}
+.fz-15 {
+    font-size: 15px;
+}
+.fz-17 {
+    font-size: 17px;
+}
+/* font-sizes */
+.fz-20 {
+    font-size: 20px;
+}
+.fz-25 {
+    font-size: 25px;
+}
+.fz-27 {
+    font-size: 27px;
+}
+.fz-30 {
+    font-size: 30px;
+}
+.fz-35 {
+    font-size: 35px;
+}
+.fz-40 {
+    font-size: 40px ;
+}
+.fw-500 {
+    font-weight: 500!important;
+}
+.fw-600 {
+    font-weight: 600!important;
+}
+.fw-700 {
+    font-weight: 700!important;
+}
+body {
+    background-color: #f8f9fa;
+    color: #343a40;
+}
+.w-20 {
+ width:20%!important;
+}
+.w-30 {
+    width:30%!important;
+}
+.w-35 {
+    width: 35% !important;
+}
+.w-40 {
+    width: 40%!important;
+}
+.w-50 {
+    width: 50% !important;
+}
+.w-60 {
+    width: 60% !important;
+}
+.w-70 {
+    width:70%!important;
+}
+.w-80 {
+    width: 80%!important;
+}
+.overflow-hidden {
+    overflow:hidden!important;
+}
+.min-h-80-vh {
+    min-height: 85vh!important;
+}
+.br-charcoal-lo-2 {
+    border-right: 2px solid #2f4550b2;
+}
+a {
+    text-decoration: none!important;
+}
+.navbar-nav .nav-link {
+    color: #ffffff;
+}
+.hero-section {
+    padding: 100px 0;
+    text-align: center;
+}
+.hero-section h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+.hero-section p {
+    font-size: 1.25rem;
+}
+.services-section {
+    padding: 50px 0;
+}
+.services-section h2 {
+    margin-bottom: 30px;
+
+}
+.service-card {
+    min-height: 21em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+.service-card:hover {
+    transform: translateY(-5px);
+}
+.service-card img {
+    max-height: 200px;
+    object-fit: cover;
+}
+#footer {
+    padding: 20px 0;
+}
+#booking input {
+    width:100%;
+    margin-bottom: 10px;
+    padding:10px;
+    border: 0px;
+    
+}
+#booking select {
+    padding:10px;
+    border: 0px;
+}
+.br-10 {
+    border-radius: 10px!important;
+}
+.br-ghost-white-2 {
+    border-right: 2px solid #f4f4f9;
+}
+/* Text and background colours */
+.text-bg-blue {
+    background-color: #222099!important;
+    color: #f4f4f9!important;
+}
+.text-blue {
+    color:  #222099!important;
+}
+.text-bg-purple {
+    background-color: #4b295fcc!important;
+    color: #f4f4f9 !important;
+}
+.text-bg-green {
+    background-color: #0a915dd2!important;
+    color: #f4f4f9 !important;
+
+}
+.bg-dark-grey {
+    background-color: #3b3b3b;
+}
+.text-bg-dark-grey {
+    background-color: #2b2b2b!important;
+    color: #f4f4f9 !important;
+}
+.text-bg-registration {
+    background-color: #f8c006!important;
+    color: #000!important;
+    padding:5px;
+    font-weight: 700;
+    border-radius: 4px!important;
+}
+.text-bg-yellow {
+    background-color: #fdc304e1!important;
+    color:#3b3b3b!important;
+}
+.text-dark-grey {
+    color:#2b2b2b!important;
+}
+.bg-low-op-purple {
+    background-color: #865aa027!important;
+}
+.bg-low-op-blue {
+    background-color: #d8effc96!important;
+ 
+}
+.bg-low-op-green {
+    background-color: #d8fcd95d!important;
+ 
+}
+.bg-low-op-red {
+    background-color: #fce7e780!important;
+}
+.bg-ghost-white {
+    background-color: #f4f4f9!important;
+}
+.bg-light-blue {
+    background-color: #b8dbd9;
+}
+.bg-paynes-grey {
+    background-color: #586f7c;
+}
+.bg-charcoal {
+    background-color: #2f4550;
+}
+.bg-black {
+    background-color: #000;
+}
+.bb-2-gw {
+    border-bottom: 1px solid #f4f4f9!important;
+}
+.text-ghost-white {
+    color: #f4f4f9!important;
+}
+.text-light-blue {
+    color:#b8dbd9;
+}
+.text-paynes-grey {
+    color: #586f7c;
+}
+.text-charcoal {
+    color: #2f4550!important;
+}
+.text-green {
+    color: #77a35a;
+}
+.bg-green-light {
+    background-color: #d0ffd3;
+}
+/* recieved bookings table */
+.cell-width-5 {
+    width:5%;
+}
+.cell-width-10 {
+    width:10%;
+}
+.cell-width-15 {
+    width:15%;
+}
+.cell-width-20 {
+    width:20%;
+}
+.cell-width-25 {
+    width:22%;
+}
+.cell-width-30 {
+    width:30%;
+}
+.cell-width-40 {
+    width:40%;
+}
+.cell-width-50 {
+    width:50%;
+}
+.border-2-sky-blue {
+    border: 2px solid #98bdff!important;
+}
+/* portal colours */
+.text-admin-purple {
+    color: #4b49ac!important;
+}
+.text-bg-admin-purple {
+    background-color: #4b49ac!important;
+    color:#f4f4f9!important;
+}
+
+.text-admin-sky-blue {
+    color: #98bdff!important;
+    
+}
+.bg-admin-sky-blue {
+    background-color: #98bdff!important;
+}
+.text-admin-salmon {
+    color: #f1666b!important;
+}
+.text-bg-admin-sky-blue {
+    background-color: #98bdff!important;
+    color:#f4f4f9!important;
+}
+
+.text-admin-lighter-purple {
+    color: #7978e9!important;
+}
+.text-bg-admin-lighter-purple {
+    background-color: #7978e9!important;
+    color: #f4f4f9 !important;
+}
+.bg-admin-lighter-purple {
+    background-color: #7978e9!important;
+}
+.text-bg-admin-sky-blue-darker {
+    background-color: #5981e7!important;
+    color: #f4f4f9 !important;   
+}
+.text-admin-sky-blue-darker {
+      color: #5981e7!important;
+ 
+}
+.text-bg-admin-salmon {
+    background-color: #f1666b!important;
+    color: #f4f4f9!important;
+}
+.border-r-sky-blue-2 {
+    border-right: 2px solid #98bdff!important;
+}
+.border-sky-blue-2 {
+    border: 2px solid #98bdff!important;
+}
+.bg-ghost-white {
+    background-color: #f4f4f9!important;
+}

@@ -1,0 +1,95 @@
+{% block html_head_container %}
+
+{% include 'html-header.twig' %}
+	{% block head %}
+	{% endblock %}
+	</head>
+{% endblock %}
+
+	<body class="{{body_class}}" data-template="base.twig">
+		{{ function('wp_body_open') }}
+		<a class="skip-link screen-reader-text" href="#content">{{ _e( 'Skip to content') }}</a>
+		<header class="header" >
+			{% block header %}
+	<nav class="navbar navbar-expand-sm bg-ghost-white text-blue font-montserrat p-0">
+  <div class="container p-0">
+  <div class="navbar w-100 justify-content-start px-4">
+  	    <ul class="navbar-nav fz-17 text-blue fw-600">
+		<li class="nav-item p-2 mr-2"><i class="fa-brands fa-facebook"></i></li>
+		<li class="nav-item p-2 mr-2"><i class="fa-brands fa-x-twitter"></i></li>
+		<li class="nav-item p-2"><i class="fa-brands fa-instagram"></i></li>
+		</ul>
+  </div>
+      <div class="navbar w-100 justify-content-end p-0" id="userNavbar">
+	  {% if user %}
+	    <ul class="navbar-nav fz-15 text-blue fw-600">
+		<li class="nav-item p-2"><i class="fa-solid fa-user"></i>&nbsp;&nbsp;{{ user.meta('first_name') }}</li>
+	 <li class="nav-item text-blue">
+          <a class="nav-link text-blue" href="/customer-profile/">My bookings</a>		
+		</li>
+		<li class="nav-item">
+          <a class="nav-link text-blue" href="">Log out</a>
+		</li>
+		</ul>
+		{% else %}
+			    <ul class="navbar-nav fz-15">
+	
+	 <li class="nav-item">
+          <a class="nav-link" href="/wp-login/"><i class="fa-solid fa-user"></i>&nbsp;&nbsp;&nbsp;Log in</a>		
+		</li>
+		<li class="nav-item p-2">
+          /
+		</li>
+	
+		<li class="nav-item">
+          <a class="nav-link" href="/custom-registration/">Register</a>
+		</li>
+		</ul>
+{% endif %}
+    </div>
+  </div>
+
+
+
+
+
+
+</nav>
+<nav class="navbar navbar-expand-sm text-bg-blue font-montserrat p-3">
+  <div class="container">
+    <a class="text-ghost-white font-montserrat fz-25" href="{{site.url}}">Imaginary Travel</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end fw-600" id="collapsibleNavbar">
+	{% include "menu.twig" with {'items': menu.get_items} %}
+
+    </div>
+  </div>
+</nav>
+
+			{% endblock %}
+		</header>
+
+		<section id="content" role="main" class="content-wrapper">
+			{% if title %}<h1>{{title}}</h1>{% endif %}
+			<div class="wrapper">
+				{% block content %}
+					Sorry, no content
+				{% endblock %}
+			</div>
+			{% if sidebar %}
+				<aside class="layout-sidebar">
+					{{sidebar}}
+				</aside>
+			{% endif %}
+		</section>
+
+		{% block footer %}
+			<footer class="text-bg-dark-grey" id="footer">
+				{% include 'footer.twig' %}
+			</footer>
+			{# {{ function('wp_footer') }} #}
+		{% endblock %}
+	</body>
+</html>

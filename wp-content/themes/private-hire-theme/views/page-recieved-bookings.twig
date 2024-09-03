@@ -1,0 +1,586 @@
+{% extends 'portal-base.twig' %}
+
+{% block content %}
+	{# 
+				https://calendar.google.com/calendar/render?
+				action=TEMPLATE&text=Example+Google+Calendar+Event&details=&dates=20201231T160000/20201231T170000&recur=RRULE:FREQ%3DWEEKLY;UNTIL%3D20210603&ctz=America/Toronto 
+				 #}
+	{% include './partial/portal-hero.twig' with {
+			'title': 'Private Hire Bookings',
+		 } %}
+	<div class="container mt-3" style="padding:0em!important;min-height:85vh;">
+
+		<table class="table align-middle p-5 mb-0 border-sky-blue-2 bg-ghost-white font-montserrat br-10">
+			<thead class="bg-admin-sky-blue">
+				<tr>
+					{# <th>Journey type</th> #}
+					<th class="cell-width-15 px-4 bg-admin-sky-blue text-dark-grey br-ghost-white-2 fw-600">Booked by</th>
+					<th class="cell-width-30 px-4 bg-admin-sky-blue text-dark-grey br-ghost-white-2 fw-600">Pick-up</th>
+
+					<th class="cell-width-30 px-4 bg-admin-sky-blue text-dark-grey br-ghost-white-2 fw-600">Drop-off</th>
+					<th class="cell-width-15 px-4 bg-admin-sky-blue text-dark-grey br-ghost-white-2 fw-600">Driver / Vehicle</th>
+					{# <th class="cell-width-20 px-4 text-bg-dark-grey br-ghost-white-2">Driver/Vehicle</th>
+															<th class="cell-width-10 px-4 text-bg-dark-grey br-ghost-white-2">Tools</th> #}
+					<th class="cell-width-10 px-2 bg-admin-sky-blue"></th>
+				</tr>
+			</thead>
+			<tbody class="bg-ghost-white">
+				{% for post in posts %}
+					{# DM: format outbound journey date and time fields for Google Calendar insert #}
+					{% set pu_date =  post.meta('pick-up_date') %}
+					{% set pu_date = pu_date|replace({'/': '-'}) %}
+					{% set pu_date = pu_date|date('Y-m-d') %}
+					{% set pu_date = pu_date|replace({'-': ''}) %}
+					{% set pu_time = post.meta('pick-up_time') %}
+					{% set pu_time = pu_time|replace({':': ''}) %}
+
+					{# DM: format return journey fields for Google Calendar insert #}
+					{% set rpu_date =  post.meta('return_pick-up_date') %}
+					{% set rpu_date = rpu_date|replace({'/': '-'}) %}
+					{% set rpu_date = rpu_date|date('Y-m-d') %}
+					{% set rpu_date = rpu_date|replace({'-': ''}) %}
+					{% set rpu_time = post.meta('return_pick-up_time') %}
+					{% set rpu_time = rpu_time|replace({':': ''}) %}
+
+					{# DM: build add to Google calendar URL for outbound journey #}
+					{% set google_calendar_url = "https://www.google.com/calendar/render?action=TEMPLATE" %}
+					{% set google_calendar_url = google_calendar_url ~ "&text=" ~  post.meta('full_name')|url_encode %}
+					{% set google_calendar_url = google_calendar_url ~ "&dates=" ~ pu_date ~ "T" ~ pu_time ~ "/" ~ pu_date ~ "T" ~ pu_time  %}
+					{% set google_calendar_url = google_calendar_url ~ "&details=" ~  post.meta('pick-up_location')|url_encode %}
+					{% set google_calendar_url = google_calendar_url ~ "&location=" ~ post.meta('pickup_postcode')|url_encode %}
+					{% set google_calendar_url = google_calendar_url ~ "&sprop=" %}
+
+					{# DM: build add to Google calendar URL for return journey #}
+					{% set google_calendar_url_return = "https://www.google.com/calendar/render?action=TEMPLATE" %}
+					{% set google_calendar_url_return = google_calendar_url_return ~ "&text=" ~  post.meta('full_name')|url_encode %}
+					{% set google_calendar_url_return = google_calendar_url_return ~ "&dates=" ~ rpu_date ~ "T" ~ rpu_time ~ "/" ~ rpu_date ~ "T" ~ rpu_time  %}
+					{% set google_calendar_url_return = google_calendar_url_return ~ "&details=" ~  post.meta('return_pickup_location')|url_encode %}
+					{% set google_calendar_url_return = google_calendar_url_return ~ "&location=" ~ post.meta('return_pickup_postcode')|url_encode %}
+					{% set google_calendar_url_return = google_calendar_url_return ~ "&sprop=" %}
+
+
+					{% set pickup_house_number = post.meta('pickup_house_number')  %}
+					{% set pickup_postcode = post.meta('pickup_postcode')  %}
+					{% set drop_off_property_number = post.meta('drop_off_property_number') %}
+					{% set drop_off_postcode = post.meta('drop_off_postcode')  %}
+
+					{% set return_pickup = post.meta('return_pickup_location') %}
+					{% set assigned_driver = post.meta('assigned_driver') %}
+					{% set assigned_vehicle = post.meta('assigned_vehicle') %}
+					{% set assigned_driver_return = post.meta('assigned_driver_return') %}
+					{% set assigned_vehicle_return = post.meta('assigned_vehicle_return') %}
+
+					<tr>
+						<td class="px-2 pt-3 border-r-sky-blue-2">
+
+							<p class="fw-600 fz-17 mb-1">{{ post.meta('full_name') }}</p>
+							{# <p class="mb-0">{{ post.meta('email') }}</p> #}
+							on
+							<p class="fz-13 fw-500 d-inline-block p-1 br-10">
+								{{ post.post_date|date('d/m/Y H:i') }}</p>
+
+						</td>
+						<td class="px-4 border-r-sky-blue-2 bg-ghost-white">
+							<p class="fw-500 fz-17 p-0 mb-0">
+								<i class="fa-solid fa-location-dot text-admin-salmon"></i>
+								{% if pickup_house_number %}
+									&nbsp;{{ pickup_house_number }}
+								{% endif %}
+								&nbsp;{{ post.meta('pick-up_location') }},
+								{% if pickup_postcode %}
+									{{ pickup_postcode }}
+								{% endif %}
+
+							</p>
+							<p class="mb-0 fz-15 d-inline-block fw-500 br-10 p-1">
+								<i class="fa-solid fa-calendar-days text-admin-purple"></i>
+								&nbsp;{{ post.meta('pick-up_date') }}
+								&nbsp;&nbsp;<i class="fa-solid fa-clock text-admin-purple"></i>
+								&nbsp;{{ post.meta('pick-up_time')|date('H:i') }}&nbsp; 
+																&nbsp;<i class="fa-solid fa-people-group text-admin-purple"></i>
+								&nbsp;{{ post.meta('passenger_number') }}
+								&nbsp;&nbsp;<i class="fa-solid fa-suitcase text-admin-purple"></i>
+								&nbsp;{{ post.meta('number_of_large_bags_cases') }}</p>
+						</td>
+
+						<td class="px-4 border-r-sky-blue-2">
+							<p class="fw-500 fz-17 mb-1">
+								<i class="fa-solid fa-location-dot text-admin-salmon"></i>
+								{% if drop_off_property_number %}
+									&nbsp;{{ drop_off_property_number }}
+								{% endif %}
+								{{ post.meta('drop-off_location') }},
+								{% if drop_off_postcode %}
+									{{ drop_off_postcode }}
+									&nbsp;&nbsp;&nbsp;
+								{% endif %}
+							</p>
+							{% if post.meta('flight_number') %}
+								<p class="mb-0  fw-600">
+									<i class="fa-solid fa-plane-departure text-admin-sky-blue-darker fz-17"></i>
+									&nbsp;{{ post.meta('flight_number') }}</p>
+							{% endif %}
+
+						</td>
+						<td class="px-4 border-r-sky-blue-2 bg-ghost-white">
+							{% if assigned_driver %}
+								<span class="text-admin-purple fz-15 fw-600 p-1">
+									<i class="fa-regular fa-circle-check"></i>
+									driver</span><br>
+							{% else %}
+								<button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#addDriverModal">
+									Add driver
+								</button>
+							{% endif %}
+							{% if assigned_vehicle %}
+								<span class="text-admin-sky-blue-darker fz-15 fw-600 p-1">
+									<i class="fa-regular fa-circle-check"></i>
+									vehicle</span>
+							{% else %}
+								<button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#addVehicleModal">
+									Add vehicle
+								</button>
+
+							{% endif %}
+						</td>
+						{# <td class="bg-ghost-white px-4 br-charcoal-lo-2">
+																			{% if assigned_driver %}
+																				{% for value in assigned_driver %}
+																					<p class="fw-600 mb-1">{{ value.post_title }}</p>
+																				{% endfor %}
+																			{% else %}
+																				<p class="fw-600 text-secondary">No driver assigned</p>
+																			{% endif %}
+																			{% if assigned_vehicle %}
+																				{% for value in assigned_vehicle %}
+																					<p class="fw-600">{{ value.post_title }}
+																						&nbsp;&nbsp;&nbsp;<span class="fz-15 p-1 text-bg-registration">{{ value.registration }}</span>
+																					</p>
+																				{% endfor %}
+																			{% else %}
+																			<a class="edit-button bg-ghost-white p-1 fw-600" href="{{ post.link }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Allocate vehicle to this job?">+ Driver</a>
+												
+																			{% endif %}
+												
+																		</td> #}
+
+						{# <td class="bg-ghost-white p-2 br-charcoal-lo-2">
+																		<p>	<a class="fz-13 text-primary p-1 fw-600" data-bs-toggle="tooltip" data-bs-placement="top" title="Open route in Google Maps" href="https://www.google.com/maps/dir/{{ post.meta('pick-up_location') }}+{{ post.meta('pickup_postcode') }},+UK/{{ post.meta('drop-off_location') }}+{{ post.meta('drop_off_postcode') }}">
+																				<i class="fa-solid fa-map-location-dot"></i>&nbsp;Open in maps
+																			</a></p>
+																		<p><a class="fz-13 text-info p-1 fw-600" href="{{ google_calendar_url }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Add journey into Google calendar" target="_blank">
+																				<i class="fa-solid fa-calendar-plus"></i>&nbsp;Add to calendar
+																			</a></p>
+												
+																		</td> #}
+						<td>
+
+							<a class="btn text-bg-admin-purple fw-600 fz-13 mb-1 p-1 w-100" data-bs-toggle="modal" data-bs-target="#booking-{{post.id}}">
+								<i class="fa-solid fa-arrow-right"></i>
+								&nbsp;View</a>
+							{% if return_pickup %}
+								<button class="fz-13 fw-600 btn btn-secondary p-1 w-100" onclick="showReturn({{ post.id }})">
+									
+									Open return <i class="fa-solid fa-arrow-right-arrow-left"></i></button>
+							{% endif %}
+						</td>
+					</tr>
+
+					{#----------------- return journey ------------------------------------------------------#}
+					{% if return_pickup %}
+						{% if post.meta('return_flight_number') %}
+							{% set return_flight_number = post.meta('return_flight_number') %}
+							{% set open_in_fradar_url = 'https://flightradar24.com/'  %}
+							{% set open_in_fradar_url = open_in_fradar_url ~ return_flight_number %}
+						{% endif %}
+						<tr id="return-{{ post.id }}" class="d-none">
+							<td class="border-r-sky-blue-2 px-4">
+								<div class="d-flex align-items-center">
+									<div class="ms-3">
+										<p class="fw-600 fz-15 mb-1">{{ post.meta('full_name') }}</p>
+										<p class="mb-0 fz-13">Return Journey</p>
+									</div>
+								</div>
+							</td>
+							<td class="border-r-sky-blue-2 bg-ghost-white px-4">
+								<p class="fw-500 fz-17 mb-1">
+									<i class="fa-solid fa-location-dot text-admin-salmon"></i>
+									{% if post.meta('return_pick-up_property_number') %}
+										&nbsp{{ post.meta('return_pick-up_property_number') }}
+									{% endif %}
+									{{ post.meta('return_pickup_location') }},
+									{{ post.meta('return_pickup_postcode') }}
+
+								</p>
+								<p class="mb-0 fz-15 fw-500">
+									<i class="fa-solid fa-calendar-days text-admin-purple"></i>
+									&nbsp;{{ post.meta('return_pick-up_date') }}
+									&nbsp;&nbsp;<i class="fa-solid fa-clock text-admin-purple"></i>
+									&nbsp;{{ post.meta('return_pick-up_time')|date('H:i') }}
+									&nbsp;&nbsp;<i class="fa-solid fa-plane-arrival text-admin-sky-blue-darker fz-17"></i>
+									{% if post.meta('return_flight_number') %}
+										<span class="fw-600">&nbsp;{{ post.meta('return_flight_number') }}</span></p>
+								{% endif %}
+
+							</td>
+
+							<td class="border-r-sky-blue-2 px-4">
+								<p class="fw-500 fz-17 mb-1">
+									<i class="fa-solid fa-location-dot text-admin-salmon"></i>
+									&nbsp;{{ post.meta('return_dropoff_property_number') }}
+									{{ post.meta('return_drop-off_location') }},
+									{{ post.meta('return_drop_off_postcode') }}
+									&nbsp;&nbsp;&nbsp;</p>
+
+							</td>
+							<td class="border-r-sky-blue-2 bg-ghost-white">
+								{% if assigned_driver_return %}
+									&nbsp;&nbsp;<span class="text-admin-purple fz-15 fw-600 p-1">
+										<i class="fa-regular fa-circle-check"></i>
+										return driver</span>
+								{% else %}
+									<button type="button" class="btn text-bg-admin-salmon btn-sm fw-600 fz-13 mb-1" data-bs-toggle="modal" data-bs-target="#addReturnDriverModal-{{ post.ID }}">
+										Assign return driver
+									</button>
+								{% endif %}
+								{% if assigned_vehicle_return %}
+									&nbsp;&nbsp;<span class="text-admin-sky-blue-darker fz-15 fw-600 p-1 br-10">
+										<i class="fa-regular fa-circle-check"></i>
+										return vehicle</span>
+								{% else %}
+									<button type="button" class="btn text-secondary border-0 fw-600 btn-sm fz-15 mb-1" data-bs-toggle="modal" data-bs-target="#addReturnVehicleModal">
+									 &nbsp;&nbsp;<i class="fa-solid fa-circle-plus"></i> Assign vehicle
+									</button>
+
+								{% endif %}
+							</td>
+							<td class="border-r-sky-blue-2 px-2">
+								<button class="fz-13 btn text-admin-salmon bg-ghost-white fw-600 p-1" onclick="closeReturn({{ post.id }})">
+									<i class="fa-solid fa-circle-xmark"></i>
+									&nbsp;Close return</button>
+							</td>
+						</tr>
+
+					{% endif %}
+					<div class="modal " id="booking-{{post.id}}">
+						<div class="modal-dialog modal-lg">
+							<div
+								class="modal-content font-montserrat">
+
+<!-- Modal Header -->
+<div class="font-montserrat p-3 text-bg-admin-sky-blue-darker" style="height:8em">
+	<div class="row">
+		<div class="col-7 p-3 px-4">
+			<h2 class="d-block">#{{ post.id }}
+				-
+				{{ post.meta('full_name') }}</h2>
+			<p>
+				<span class="text-ghost-white fz-25 fw-600 p-1 px-2 br-10">
+					{{ post.meta('travel_type') }}
+				</span>
+				<span class="p-2 text-ghost-white fz-20 fw-600">
+					<i class="fa-solid fa-people-group"></i>
+					{{ post.meta('passenger_number') }}
+				</span>
+				<span class="p-2 text-ghost-white fz-20 fw-600">
+
+					<i class="fa-solid fa-suitcase"></i>
+					{{ post.meta('number_of_large_bags_cases') }}</span>
+			</p>
+		</div>
+		<div class="col-5 p-3">
+			<span class="muted fz-20 p-5">{{ post.post_date|date('d/m/Y H:i') }}</span>
+
+			<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+		</div>
+	</div>
+</div>
+
+
+								<!-- Modal body -->
+								<div class="modal-body px-5 py-4">
+									
+									<div class="py-3">
+									{% if post.meta('return_pick-up_date') %}			
+										
+									<p>		<span class="text-bg-admin-salmon px-2 fw-500 fz-25 br-10 d-inline-block">Outbound</span>
+										{% endif %}
+									&nbsp;&nbsp;<span class="fz-25 fw-500 p-1 text-admin-purple">{{ post.meta('pick-up_date') }}
+											at
+											{{ post.meta('pick-up_time')|date('H:i') }}</span> </p>
+
+								
+									<p class="fz-30 py-3 px-5 mt-3 br-10 fw-500 text-admin-sky-blue-darker">
+										<span>
+											{% if pickup_house_number %}
+
+												{{ pickup_house_number }}
+											{% endif %}
+											{{ post.meta('pick-up_location') }}
+											{{ pickup_postcode }}</span><br>
+										&nbsp;&nbsp;<i class="fa-solid fa-arrow-right-long"></i>
+										&nbsp;&nbsp;<span>
+											{% if drop_off_property_number %}
+												{{ drop_off_property_number }}
+											{% endif %}
+											{{ post.meta('drop-off_location') }}
+											{{ drop_off_postcode }}</span>
+									</p>
+									<p class="fw-600 fz-17 p-2 px-5 mb-1 br-10 text-center text-dark-grey">
+										{% if assigned_driver %}
+
+											{% for value in assigned_driver %}
+
+												<span>
+													<i class="fa-solid fa-id-card"></i>&nbsp;&nbsp;&nbsp;{{ value.post_title }}</span>
+
+											{% endfor %}
+										{% endif %}
+										{% if assigned_vehicle %}
+											{% for value in assigned_vehicle %}
+												&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-van-shuttle"></i>&nbsp;&nbsp;&nbsp;{{ value.post_title }}
+												&nbsp;&nbsp;&nbsp;<span class="fz-17 fw-600 p-1 br-10 text-bg-dark-grey">{{ value.registration }}</span>
+
+											{% endfor %}
+											{% else %}
+
+										{% endif %}
+									</p>
+
+								</div>
+							<div class="w-100 overflow-hidden mb-3">
+								<div class="row">
+									<div class="col-6 p-2 text-center ">
+										<a class="fz-17 text-ghost-white text-bg-admin-sky-blue-darker p-4 fw-600 w-60" data-bs-toggle="tooltip" data-bs-placement="top" title="Open route in Google Maps" href="https://www.google.com/maps/dir/{{ post.meta('pick-up_location') }}+{{ post.meta('pickup_postcode') }},+UK/{{ post.meta('drop-off_location') }}+{{ post.meta('drop_off_postcode') }}">
+											<i class="fa-solid fa-map-location-dot"></i>&nbsp;Open in maps
+										</a>
+									</div>
+									<div class="col-6 p-2 text-center ">
+										<a class="fz-17 p-4 fw-600 w-60 text-bg-admin-purple text-ghost-white" href="{{ google_calendar_url }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Add journey into Google calendar" target="_blank">
+											<i class="fa-solid fa-calendar-plus"></i>&nbsp;Add to calendar
+										</a>
+									</div>
+									</div>
+								</div>
+									{% if post.meta('return_pick-up_date') %}			
+										<hr>
+										<br>
+									<p>		<span class="text-bg-admin-salmon px-2 fw-500 fz-25 br-10 d-inline-block">Return</span>
+														
+									&nbsp;&nbsp;<span class="fz-25 fw-500 p-1 text-admin-purple">
+										{{ post.meta('return_pick-up_date') }}
+										at
+										{{ post.meta('return_pick-up_time')|date('H:i') }}
+									</span>
+									</p>
+									<p class="fz-30 py-3 px-5 mt-3 br-10 fw-500 text-admin-sky-blue-darker">
+										<span>
+											{% if post.meta('return_pick-up_property_number') %}
+												&nbsp{{ post.meta('return_pick-up_property_number') }}
+											{% endif %}
+											{{ post.meta('return_pickup_location') }},
+											{{ post.meta('return_pickup_postcode') }}</span><br>
+										&nbsp;&nbsp;<i class="fa-solid fa-arrow-right-long"></i>
+										&nbsp;&nbsp;<span>
+											{{ post.meta('return_dropoff_property_number') }}
+											{{ post.meta('return_drop-off_location') }},
+											{{ post.meta('return_drop_off_postcode') }}</span>
+									</p>
+									<p class="fw-600 fz-17 p-2 px-6 mb-3 br-10 text-center text-admin-purple">
+										{% if assigned_driver_return %}
+
+											{% for value in assigned_driver_return %}
+
+												<span>
+													<i class="fa-solid fa-id-card"></i>&nbsp;&nbsp;&nbsp;{{ value.post_title }}</span>
+
+											{% endfor %}
+										{% else %}
+											<span>
+												<i class="fa-solid fa-id-card"></i>&nbsp;&nbsp;No driver assigned</span>
+										{% endif %}
+										{% if post.meta('assigned_vehicle_return') %}
+											{% for value in post.meta('assigned_vehicle_return') %}
+												&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-van-shuttle"></i>&nbsp;&nbsp;&nbsp;{{ value.post_title }}
+												&nbsp;&nbsp;&nbsp;<span class="fz-17 fw-600 p-1 br-10 text-bg-admin-salmon">{{ value.registration }}</span>
+
+											{% endfor %}
+										{% else %}
+											&nbsp;&nbsp;&nbsp;<span>
+												<i class="fa-solid fa-van-shuttle"></i>&nbsp;&nbsp;No vehicle assigned</span>
+										{% endif %}
+									</p>
+								{% endif %}
+									<div class="w-100 overflow-hidden mb-3">
+								<div class="row">
+									<div class="col-6 p-2 text-center ">
+										<a class="fz-17 text-ghost-white text-bg-admin-sky-blue-darker p-4 fw-600 w-60" data-bs-toggle="tooltip" data-bs-placement="top" title="Open route in Google Maps" href="https://www.google.com/maps/dir/{{ post.meta('pick-up_location') }}+{{ post.meta('pickup_postcode') }},+UK/{{ post.meta('drop-off_location') }}+{{ post.meta('drop_off_postcode') }}">
+											<i class="fa-solid fa-map-location-dot"></i>&nbsp;Open in maps
+										</a>
+									</div>
+									<div class="col-6 p-2 text-center ">
+										<a class="fz-17 p-4 fw-600 w-60 text-bg-admin-purple text-ghost-white" href="{{ google_calendar_url }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Add journey into Google calendar" target="_blank">
+											<i class="fa-solid fa-calendar-plus"></i>&nbsp;Add to calendar
+										</a>
+									</div>
+									</div>
+								</div>
+								</div>
+
+
+
+							</div>
+						</div>
+					</div>
+
+					<!--add driver modal -->
+					<div class="modal" id="addDriverModal">
+						<div class="modal-dialog">
+							<div
+								class="modal-content">
+
+								<!-- Modal Header -->
+								<div class="modal-header text-bg-admin-sky-blue-darker">
+									<h4 class="modal-title">Assign Driver</h4>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+								</div>
+
+								<!-- Modal body -->
+								<div class="modal-body p-5">
+									<form method="post">
+										<input type="hidden" name="post_id" value="{{ post.ID }}">
+										<select class="form-select w-50 d-inline-block" name="driver_id" id="driver_id">
+											{% for driver in drivers %}
+												<option value="{{ driver.id }}">{{ driver.post_title }}</option>
+											{% endfor %}
+										</select>
+										<button class="btn btn-primary btn-sm d-inline-block" type="submit" name="assign_driver">Assign this driver</button>
+									</form>
+								</div>
+
+								<!-- Modal footer -->
+								<div class="modal-footer">
+									<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- assign return driver -->
+					<div class="modal" id="addReturnDriverModal-{{ post.ID }}">
+						<div class="modal-dialog modal-lg">
+							<div
+								class="modal-content font-montserrat">
+
+								<!-- Modal Header -->
+								<div class="modal-header text-bg-admin-sky-blue-darker">
+									<h4 class="modal-title">Assign Return Driver</h4>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+								</div>
+
+								<!-- Modal body -->
+								<div class="modal-body p-5">
+									<form action="/" method="post">
+										<input type="hidden" name="post_id" value="{{ post.ID }}">
+										<select class="form-select w-70 d-inline-block text-admin-sky-blue-darker fw-600 p-3 fz-17 border-2-sky-blue justify-content-start" name="return_driver_id" id="return_driver_id">
+											{% for driver in drivers %}
+												<option value="{{ driver.id }}">{{ driver.post_title }}</option>
+											{% endfor %}
+										</select>
+										<button class="btn btn-primary btn-sm d-inline-block w-25 p-3 justify-content-end fz-17 fw-600" type="submit" name="assign_return_driver">Assign</button>
+									</form>
+								</div>
+
+								<!-- Modal footer -->
+								<div class="modal-footer text-bg-admin-sky-blue"></div>
+
+							</div>
+						</div>
+					</div>
+
+
+					<!--add vehicle modal -->
+					<div class="modal" id="addVehicleModal">
+						<div class="modal-dialog">
+							<div
+								class="modal-content font-montserrat">
+
+								<!-- Modal Header -->
+								<div class="modal-header text-bg-admin-sky-blue-darker">
+									<h4 class="modal-title">Assign Vehicle</h4>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+								</div>
+
+								<!-- Modal body -->
+								<div class="modal-body p-5">
+									<form action="" method="post">
+										<input type="hidden" name="post_id" value="{{ post.ID }}">
+										<select class="form-select w-50 d-inline-block" name="vehicle_id" id="vehicle_id">
+											{% for vehicle in vehicles %}
+												<option value="{{ vehicle.id }}">{{ vehicle.post_title }}</option>
+											{% endfor %}
+										</select>
+										<button class="btn btn-primary btn-sm d-inline-block" type="submit" name="assign_vehicle">Assign this vehicle</button>
+									</form>
+								</div>
+
+								<!-- Modal footer -->
+								<div class="modal-footer">
+									<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!--add return vehicle modal -->
+					<div class="modal" id="addReturnVehicleModal">
+						<div class="modal-dialog modal-lg">
+							<div
+								class="modal-content font-montserrat">
+
+								<!-- Modal Header -->
+								<div class="modal-header text-bg-admin-sky-blue-darker">
+									<h4 class="modal-title">Assign Return Vehicle</h4>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+								</div>
+
+								<!-- Modal body -->
+								<div class="modal-body p-5">
+									<form action="" method="post">
+										<input type="hidden" name="post_id" value="{{ post.ID }}">
+										<select class="form-select w-70 d-inline-block p-3 bg-admin-sky-blue border-0 fw-600" name="return_vehicle_id" id="return_vehicle_id">
+											{% for vehicle in vehicles %}
+												<option class="fw-600 p-2" value="{{ vehicle.id }}">{{ vehicle.post_title }} (Passengers: {{vehicle.passenger_seats}} | Suitcases: {{vehicle.large_suitcase_capacity}})</option>
+											{% endfor %}
+										</select>
+										<br><br>
+										<button class="btn text-bg-admin-purple btn-lg d-inline-block w-70" type="submit" name="assign_return_vehicle">Assign this vehicle </button>
+									</form>
+								</div>
+
+								<!-- Modal footer -->
+								<div class="modal-footer">
+									<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+	<script>
+		function showReturn(post_id) {
+let returnRow = document.getElementById('return-' + post_id);
+returnRow.classList.remove('d-none');
+}
+function closeReturn(post_id) {
+let returnRow = document.getElementById('return-' + post_id);
+returnRow.classList.add('d-none');
+}
+	</script>
+
+{% endblock %}
+
